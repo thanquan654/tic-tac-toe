@@ -1,0 +1,292 @@
+$main-text-color: #A5BDC5;
+$main-btn-color: #1E363E;
+$main-bg-color: #1a2b33;
+
+@mixin shadow ($shadow-color:#0f1214) {
+    box-shadow: 0 5px 0 0 $shadow-color
+}
+// Reset CSS
+*,
+*:before,
+*:after {
+  box-sizing: border-box;
+//   border: 1px solid red;// 
+
+}
+* {
+  margin: 0;
+  padding: 0;
+  font: inherit;
+}
+img,
+picture,
+svg,
+video {
+  display: block;
+  max-width: 100%;
+}
+html {
+    font-size: 10px;
+    font-family: 'Poppins', sans-serif;
+}
+body {
+  min-height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: rgba(71, 65, 65, 0.534);
+}
+
+.game-container {
+    position: relative;
+    max-width: 500px;
+    width: 500px;
+    height: 100vh;
+    overflow: hidden;
+    background-color: $main-bg-color;
+    font-size: 1.8rem;
+    font-weight: 600;
+    transition: background-color .6s ease-in;
+    padding: 10px;
+    transform-origin: 90% 5%;
+
+    // *Control Section
+    .control-section {
+        
+        display: flex;
+        justify-content: space-between;
+
+        .control-item {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            // flex: 1;
+            // background-color: #fff;
+
+        }
+        .control-item:nth-child(1) {
+            padding: 5px 15px;
+            margin: 10px 0;
+            border-radius: 5px;
+            background-color: $main-btn-color;
+            color: $main-text-color;
+            cursor: pointer;
+            border: 1px soild $main-text-color;
+            &:hover {
+                opacity: .8;
+            }
+        }
+        .control-item:nth-child(2) {
+            justify-self: center;
+            color: $main-text-color;
+            padding: 5px 50px;
+            margin: 10px 0;
+            border-radius: 5px;
+            background-color: $main-btn-color;
+            height: fit-content;
+            i {
+                margin-right: 7px;
+                transform: translateY(2px);
+                font-size: 3rem;
+            }
+            &.p1 {
+                border: 1px solid #31c4bd;
+                color: #31c4bd;
+            }
+            &.p2 {
+                border: 1px solid #f3b23b;
+                color: #f3b23b;
+            }
+        }
+        .control-item:nth-child(3) {
+            display: flex;
+            gap: 10px;
+            height: fit-content;
+            margin: auto 0;
+            
+            span {
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                background-color: $main-btn-color;
+                cursor: pointer;
+                height: 40px;
+                width: 40px;
+                border-radius: 5px;
+                &:hover {
+                    opacity: .8;
+                }
+
+                i {
+                    color: $main-text-color;
+                    font-size: 2.6rem;
+
+                    &:nth-child(2) {
+                        display: none;
+                    }
+                }
+                
+            }
+            
+        }
+
+    }
+    
+    .game-section {
+        margin: 50px;
+
+        .board {
+            display: grid;
+            grid-template: repeat(3, 1fr) / repeat(3, 1fr);
+            gap: 20px;
+
+            .board-item {
+                background-color: #fff;
+                border-radius: 15px;
+                background-color: $main-btn-color;
+                @include shadow();
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                font-weight: 900;
+                font-size: 80px;
+                &.p1 {
+                    color: #31c4bd;
+                    box-shadow: inset 0 0 5px 5px #31c4bd85;
+                    
+                }
+                &.p2 {
+                    
+                    color: #f3b23b;
+                    box-shadow: inset 0 0 5px 5px #f3b33b85;
+                }
+                &.p1.win-move {
+                    background-color: #31c4bd85;
+                }
+                &.p2.win-move {
+                    background-color: #f3b33b85;
+                }
+            }
+            
+
+        }
+
+    }
+
+    .result-secton {
+        display: flex;
+        align-items: center;
+        justify-content: space-around;
+        margin: 0 20px;
+
+        
+        .result-item {
+            display:flex;
+            align-items:center;
+            justify-content:center;
+            flex-direction:column;
+            min-width: 25%;
+            background-color: #fff;
+            border-radius: 10px;
+            padding: 10px 0;
+
+            &:nth-child(1){
+                background-color: #31c4bd;
+                @include shadow(#31c4bd85)
+            }
+            &:nth-child(2){
+                background-color: #a9bec9;
+                @include shadow(#a9bec985)
+            }
+            &:nth-child(3){
+                background-color: #f3b23b;
+                @include shadow(#f3b33b85)
+            }
+            .player-count {
+                font-size: 25px;
+                font-weight: 700;
+            }
+        }
+    }
+
+    .banner {
+        display: none;
+        position: absolute;
+        inset: 0;
+        background-color: rgba(204, 204, 204, 0.493);
+        align-items:center;
+        justify-content:center;
+
+        .content {
+            display:flex;
+            align-items:center;
+            justify-content:center;
+            flex-direction:column;
+            width: 100%;
+            background-color: #1a2b33;
+            padding: 50px 0;
+            animation: showBanner 0.3s cubic-bezier(0.075, 0.82, 0.165, 1);
+
+            .win-player {
+                color: $main-text-color;
+                font-size: 1.7rem;
+                font-weight: 500;
+            }
+
+            .win-notice {
+                font-size: 3rem;
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                margin: 15px 0;
+                i {
+                    font-size: 6rem;
+                    font-weight: 900;
+                }
+                span {
+                    margin: 0 10px;
+                }
+                &.p1 {
+                    color: #31C4BD;
+                }
+                &.p2 {
+                    color: #f3b23b;
+                }
+                &.tie {
+                    color: $main-text-color
+                }
+            }
+
+            .control-btn {
+                button {
+                    padding: 7px 14px;
+                    color: #000;
+                    border-radius: 5px;
+                    border: none;
+                    margin: 0 5px;
+                    &:hover {
+
+                    }
+                    &:nth-child(1) {
+                        background-color: $main-text-color;
+                        @include shadow(rgb(165 189 197 / 50%));
+                    }
+                    &:nth-child(2) {
+                        background-color: #f3b23b;
+                        @include shadow(#f3b33bc2);
+                    }
+                }
+            }
+        }
+        @keyframes showBanner {
+            from {
+                opacity: 0;
+                transform: translateX(-100%);
+            } to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+    }
+}
+

@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tic-tac-toe</title>
+    <link rel="icon" href="https://cdn-icons-png.flaticon.com/512/1021/1021264.png">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.1/css/all.min.css"
+        integrity="sha512-MV7K8+y+gLIBoVD59lQIYicR65iaqukzvf/nwasF0nqhPay5w/9lJmVM2hMDcnK1OnMGCdVK+iQrJ7lzPJQd1w=="
+        crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800;900&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="./style.css">
+</head>
+
+<body>
+    <div class="game-container">
+        <!-- CONTROL -->
+        <section class="control-section">
+            <div class="control-item" id="game-mode">
+
+                <div>
+                    <i class="fa-solid fa-user"></i> vs <i class="fa-solid fa-user"></i>
+                </div>
+            </div>
+            <div class="control-item p1" id="index-turn">
+                <span id="current-turn">...</i></span> TURN
+            </div>
+            <div class="control-item">
+                <span id="reset-btn">
+                    <i class="fa-solid fa-rotate-right"></i>
+                </span>
+                <span id="display-mode">
+                    <i class="fa-solid fa-moon"></i>
+                    <!-- <i class="fa-solid fa-sun"></i> -->
+                </span>
+            </div>
+        </section>
+        <!-- GAME -->
+        <section class="game-section">
+            <div class="board">
+                <div class="board-item" data-id="1"></div>
+                <div class="board-item" data-id="2"></div>
+                <div class="board-item" data-id="3"></div>
+                <div class="board-item" data-id="4"></div>
+                <div class="board-item" data-id="5"></div>
+                <div class="board-item" data-id="6"></div>
+                <div class="board-item" data-id="7"></div>
+                <div class="board-item" data-id="8"></div>
+                <div class="board-item" data-id="9"></div>
+            </div>
+        </section>
+        <!-- RESULT -->
+        <secton class="result-secton">
+            <div class="result-item" id="player1-result">
+                <div class="player-name"><i class="fa-solid fa-xmark"></i> (P1)</div>
+                <div class="player-count">12</div>
+            </div>
+            <div class="result-item" id="tie-result">
+                <div class="player-name">TIES</div>
+                <div class="player-count">14</div>
+            </div>
+            <div class="result-item" id="player2-result">
+                <div class="player-name"><i class="fa-sharp fa-solid fa-o"></i> (P2)</div>
+                <div class="player-count">45</div>
+            </div>
+        </secton>
+        <!-- BANNER -->
+        <section class="banner">
+            <div class="content">
+                <div class="win-player">PLAYER 1 WIN THE ROUND!</div>
+                <div class="win-notice p1"><i class="fa-solid fa-xmark"></i> <span>TAKE THE ROUND</span></div>
+                <div class="control-btn">
+                    <button>QUIT</button>
+                    <button>NEXT ROUND</button>
+                </div>
+            </div>
+        </section>
+    </div>
+</body>
+<script src="./app.js"></script>
+
+</html>
