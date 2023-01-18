@@ -3,7 +3,11 @@ const $ = document.querySelector.bind(document)
 const $$ = document.querySelectorAll.bind(document)
 
 // Element variable
+const container = $(".game-container")
+const controlSection = $(".control-section")
+const gameModeBtn = $("#game-mode")
 const resetBtn = $("#reset-btn")
+const displayModeBtn = $("#display-mode")
 const board = $(".board")
 const boardItems  = [...$$(".board-item")]
 const indexTurnDisplay = $("#index-turn")
@@ -11,7 +15,9 @@ const banner = $(".banner")
 const bannerQuitBtn = $(".banner button:nth-child(1)")
 const bannerNextBtn = $(".banner button:nth-child(2)")
 
+
 // Gameplay variable
+let isDarkMode = false
 const winSamples = [
     [1,2,3], [4,5,6], [7,8,9],
     [1,4,7], [2,5,8], [3,6,9],
@@ -20,14 +26,29 @@ const winSamples = [
 let player1Move = []
 let player2Move = []
 let isPlayer1Turn = true
+let hasWinner = false
+let isTwoPlayerMode = true
 let step = 0
 let result = {
     p1Win: 0,
     p2Win: 0,
     tie: 0
 }
+
+// Icon variable
 const player1Mark = "<i class=\"fa-solid fa-xmark\"></i>"
 const player2Mark = "<i class=\"fa-sharp fa-solid fa-o\"></i>"
+const twoPlayerIcon = 
+`<div>
+    <i class="fa-solid fa-user"></i> vs <i class="fa-solid fa-user"></i>
+</div>`
+const onePlayerIcon = 
+`<div>
+    <i class="fa-solid fa-user"></i> vs <i class="fa-solid fa-robot"></i>
+</div>`
+const darkModeIcon = `<i class="fa-solid fa-moon"></i>`
+const lightModeIcon = `<i class="fa-solid fa-sun"></i>`
+
 
 // Setting variable
 const displaySetting = {
@@ -38,39 +59,56 @@ const displaySetting = {
 
     }
 }
-function displayMode (containerBg, btnBg) {
+function DisplayMode (containerBg, btnBg) {
     this.containerBg = containerBg
     this.btnBg = btnBg
 }
-displaySetting.darkMode = new displayMode("#1a2b33", "#1E363E")
-displaySetting.lightMode = new displayMode("#fff", "#1E363E")
+displaySetting.darkMode = new DisplayMode("#2C4E59", "#1a2b33")
+displaySetting.lightMode = new DisplayMode("#eef2f7", "#fbfdfe")
 
 
 // ? Control Handler
+    // Switch 2playerMode / Human vs machine
+gameModeBtn.innerHTML = isTwoPlayerMode ? twoPlayerIcon : onePlayerIcon
+gameModeBtn.addEventListener("click", () => {
+    isTwoPlayerMode = !isTwoPlayerMode
+    gameModeBtn.innerHTML = isTwoPlayerMode ? twoPlayerIcon : onePlayerIcon
+    resetHandle()
+})
     // Index Turn Display
 changeIndexTurnDisplay()
     // Reset btn
 resetBtn.addEventListener("click", resetHandle)
+    // Switch light / dark mode
+displayModeBtn.addEventListener("click", () => {
+    isDarkMode = !isDarkMode
+    swichDisplayIcon()
+    swichDisplay()
+})
     
 // ? Game Handler
     // Add x/o when board-item clicked
 boardItems.forEach(boardItem => {
     boardItem.addEventListener("click", (e) => {
-        if (!boardItem.innerHTML) {
-            addMoveHandler(e.target)
-            isPlayer1Turn = !isPlayer1Turn
-            step++
-            changeIndexTurnDisplay()
-            winHandler()
+        if (!boardItem.innerHTML && !hasWinner) {
+                addMoveHandler(e.target)
+                isPlayer1Turn = !isPlayer1Turn
+                step++
+                changeIndexTurnDisplay()
+                winHandler()
         }
     })  
 })
+//  
 // ? Result Handler
     // Update number of result
 updateResult()
 
 //  ? Banner Handle
-bannerQuitBtn.addEventListener("click", () => banner.style.display = "none")
+bannerQuitBtn.addEventListener("click", () => {
+    banner.style.display = "none"
+    resetBtn.innerHTML = `<i class="fa-solid fa-forward"></i>`
+})
 bannerNextBtn.addEventListener("click", () => {
     banner.style.display = "none"
     resetHandle()
@@ -81,18 +119,35 @@ bannerNextBtn.addEventListener("click", () => {
 
 
 // ? Function Feature
+// Layout Design
 ;(function layoutDesign() {
     // Board width = height
     const boardWidth = board.offsetWidth 
     board.style.height = boardWidth + "px"
 })()
-
+function swichDisplayIcon() {
+    displayModeBtn.innerHTML = isDarkMode ? darkModeIcon : lightModeIcon
+}
+function swichDisplay() {
+    console.log(isDarkMode);
+    container.style.backgroundColor = isDarkMode ? displaySetting.darkMode.containerBg : displaySetting.lightMode.containerBg
+    gameModeBtn.style.backgroundColor = isDarkMode ? displaySetting.darkMode.btnBg : displaySetting.lightMode.btnBg
+    indexTurnDisplay.style.backgroundColor = isDarkMode ? displaySetting.darkMode.btnBg : displaySetting.lightMode.btnBg
+    resetBtn.style.backgroundColor = isDarkMode ? displaySetting.darkMode.btnBg : displaySetting.lightMode.btnBg
+    displayModeBtn.style.backgroundColor = isDarkMode ? displaySetting.darkMode.btnBg : displaySetting.lightMode.btnBg
+    boardItems.forEach(boardItem => {
+        boardItem.style.backgroundColor = isDarkMode ? displaySetting.darkMode.btnBg : displaySetting.lightMode.btnBg
+    })
+    banner.children[0].style.backgroundColor = isDarkMode ? displaySetting.darkMode.containerBg : displaySetting.lightMode.containerBg
+}
+// Control section function
 function changeIndexTurnDisplay() {
     indexTurnDisplay.classList = isPlayer1Turn ? "control-item p1" : "control-item p2"
     indexTurnDisplay.children[0]. innerHTML = isPlayer1Turn ? player1Mark : player2Mark
 }
 
 function resetHandle() {
+    resetBtn.innerHTML = `<i class="fa-solid fa-rotate-right"></i>`
     boardItems.forEach(boardItem => {
         boardItem.classList = "board-item"
         boardItem.innerHTML = ""
@@ -102,6 +157,7 @@ function resetHandle() {
     step = 0
     player1Move = []
     player2Move = []
+    hasWinner = false
     updateResult()
 }
 
@@ -118,12 +174,25 @@ function addMoveHandler(item) {
         }
     }
 }
+// Gameplay Handler
+// function botMoveSet() {
+//     let botMove = Math.floor(Math.random() * 9) +1
+//     let moveCheck = player1Move.includes(botMove) || player2Move.includes(botMove)
+//     while (moveCheck) {
+//         botMove = Math.floor(Math.random() * 9) + 1
+//         moveCheck = player1Move.includes(botMove) || player2Move.includes(botMove)
+//     }
+//     if (!isTwoPlayerMode && !isPlayer1Turn) {
+//         boardItems[botMove-1].click()
+//     }
+// }
 
 
 // Win handler
 function winHandler() {
     let winner = winCheck()
     if (winner) {
+        hasWinner = true
         highlightWinMove(winner)
         showBanner(winner.winnerPlayer)
     }
