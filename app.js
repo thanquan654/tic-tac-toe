@@ -101,7 +101,7 @@ boardItems.forEach(boardItem => {
 })
 //  
 // ? Result Handler
-    // Update number of result
+    // Update number of result.
 updateResult()
 
 //  ? Banner Handle
@@ -139,6 +139,7 @@ function swichDisplay() {
         boardItem.style.backgroundColor = isDarkMode ? displaySetting.darkMode.btnBg : displaySetting.lightMode.btnBg
     })
     banner.children[0].style.backgroundColor = isDarkMode ? displaySetting.darkMode.containerBg : displaySetting.lightMode.containerBg
+    $("body").style.backgroundColor = isDarkMode ? displaySetting.darkMode.containerBg : displaySetting.lightMode.containerBg
 }
 // Control section function
 function changeIndexTurnDisplay() {

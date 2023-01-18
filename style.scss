@@ -36,7 +36,6 @@ body {
   display: flex;
   justify-content: center;
   align-items: center;
-  background-color: rgba(71, 65, 65, 0.534);
 }
 
 .game-container {
@@ -51,6 +50,7 @@ body {
     transition: background-color .6s ease-in;
     padding: 10px;
     transform-origin: 90% 5%;
+    border: .5px solid #ccc;
 
     // *Control Section
     .control-section {
